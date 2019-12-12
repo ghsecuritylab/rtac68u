@@ -46,6 +46,8 @@ void ac68u_init_done(){
 			_dprintf("....softcenter ok....\n");
 		}
 #endif
+	if (!nvram_get("modelname"))
+		nvram_set("modelname", "RTAC68U");
 }
 void tm1900_check(){
 	//tm1900->ac68u
