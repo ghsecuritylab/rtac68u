@@ -26,14 +26,14 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include "merlinr.h"
+
 #include "rc.h"
 #include <shared.h>
 #include <shutils.h>
 #if defined(RTCONFIG_LANTIQ)
 #include <lantiq.h>
 #endif
-
+#include "merlinr.h"
 #include <curl/curl.h>
 
 void merlinr_insmod(){
