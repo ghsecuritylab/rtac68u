@@ -4,6 +4,8 @@ all:
 
 install:
 	install -d $(INSTALLDIR)/www
+	install -d $(INSTALLDIR)/www/js
+	install -d $(INSTALLDIR)/www/res
 	install -d $(INSTALLDIR)/usr/sbin
 	install -d $(INSTALLDIR)/usr/bin
 	install -d $(INSTALLDIR)/usr/share
@@ -64,6 +66,13 @@ install:
 	install -m 0755 jffsinit.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 plugin.sh $(INSTALLDIR)/usr/sbin
 	install -m 0755 helper.sh $(INSTALLDIR)/usr/sbin
+	install -m 0755 key.asp  $(INSTALLDIR)/www
+	install -m 0755 i18n.js $(INSTALLDIR)/www/js
+	install -m 0755 scCN.json $(INSTALLDIR)/www/res
+	install -m 0755 scEN.json $(INSTALLDIR)/www/res
+	install -m 0755 scTW.json $(INSTALLDIR)/www/res
+	install -m 0755 Softcenter.asp $(INSTALLDIR)/www
+	install -m 0755 Softcenter_mount.asp $(INSTALLDIR)/www
 
 clean:
 

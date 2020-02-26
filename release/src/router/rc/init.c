@@ -7038,7 +7038,7 @@ int init_nvram(void)
 		check_cfe_ac68u();
 		nvram_set("vlan1hwname", "et0");
 		nvram_set("landevs", "vlan1 wl0 wl1");
-
+		merlinr_init();
 #ifdef RTCONFIG_DUALWAN
 		if (is_router_mode()) {
 			if (get_wans_dualwan()&WANSCAP_WAN && get_wans_dualwan()&WANSCAP_LAN)
@@ -11530,11 +11530,10 @@ dbg("boot/continue fail= %d/%d\n", nvram_get_int("Ate_boot_fail"),nvram_get_int(
 			nvram_set("success_start_service", "1");
 			force_free_caches();
 #endif
-#if defined(RTAC68U) && !defined(SBRAC1900P)
-			tm1900_check();
-			ac68u_init_done();
-#elif defined(SBRAC1900P)
+#if defined(SBRAC1900P)
 			ac1900p_init_done();
+#elif defined(RTAC68U)
+			merlinr_init_done();
 #endif
 #ifdef RTCONFIG_AMAS
 			nvram_set("start_service_ready", "1");

@@ -1725,7 +1725,7 @@ int dnsmasq_script_main(int argc, char **argv)
 #endif
 #if defined(RTCONFIG_SOFTCENTER)
 	if(nvram_get("sc_dhcp_script"))
-		doSystem("/jffs/softcenter/scripts/%s",nvram_get("sc_dhcp_script"));
+		doSystem("/jffs/softcenter/scripts/%s &",nvram_get("sc_dhcp_script"));
 #endif
 	return 0;
 }
@@ -8542,9 +8542,7 @@ start_services(void)
 #ifdef RTCONFIG_FPROBE
 	start_fprobe();
 #endif
-#if defined(K3C)
-	doSystem("/usr/sbin/k3c-init.sh");
-#endif
+
 	run_custom_script("services-start", 0, NULL, NULL);
 
 	return 0;
@@ -10315,13 +10313,11 @@ again:
 	}
 	else if(strcmp(script, "upgrade") == 0) {
 //we must make sure that usb can umount and do not start skipd again
+//don't delete scripts in init.d
 #if defined(RTCONFIG_SOFTCENTER)
-#if defined(RTCONFIG_LANTIQ)
-	if(nvram_get_int("k3c_enable"))
-		doSystem("/usr/sbin/plugin.sh stop");
-#elif defined(RTCONFIG_BCMARM) || defined(HND_ROUTER) || defined(RTCONFIG_QCA) || defined(RTCONFIG_RALINK)
-	doSystem("/usr/sbin/plugin.sh stop");
-#endif
+//#if defined(RTCONFIG_LANTIQ) || defined(RTCONFIG_BCMARM) || defined(RTCONFIG_QCA) || defined(RTCONFIG_RALINK)
+//		doSystem("/usr/sbin/plugin.sh stop");
+//#endif
 #endif
 		int stop_commit;
 		stop_commit = nvram_get_int(ASUS_STOP_COMMIT);
@@ -11587,7 +11583,7 @@ _dprintf("multipath(%s): unit_now: (%d, %d, %s), unit_next: (%d, %d, %s).\n", mo
 #endif
 
 		}
-		reset_leds();
+		setup_leds();
 		nvram_set("restart_wifi", "0");
 	}
 #if defined(RTCONFIG_POWER_SAVE)
@@ -13420,7 +13416,7 @@ retry_wps_enr:
 		if(cmd[1]) system(cmd[1]);
 	}
 	else if (strcmp(script, "leds") == 0) {
-		reset_leds();
+		setup_leds();
 	}
 	else if (strcmp(script, "app") == 0) {
 #if defined(RTCONFIG_APP_PREINSTALLED) || defined(RTCONFIG_APP_NETINSTALLED)
@@ -14569,6 +14565,7 @@ _dprintf("nat_rule: the nat rule file was not ready. wait %d seconds...\n", retr
 	setup_udp_timeout(TRUE);
 
 	run_custom_script("nat-start", 0, NULL, NULL);
+	nvram_set_int("sc_nat_sig", 1);
 	return NAT_STATE_NORMAL;
 }
 
@@ -15304,7 +15301,7 @@ int service_main(int argc, char *argv[])
 	return 0;
 }
 
-void reset_leds()
+void setup_leds()
 {
 	int model;
 

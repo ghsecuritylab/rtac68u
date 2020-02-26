@@ -21,20 +21,30 @@
  */
 
 
+#ifndef __MERLINR_H__
+#define __MERLINR_H__
+extern void merlinr_init(void);
+extern void merlinr_init_done(void);
 #ifdef RTCONFIG_UUPLUGIN
-#if !defined(RTAC68U)
 extern void exec_uu(void);
 #endif
-#endif
 #ifdef RTCONFIG_FRS_LIVE_UPDATE
-#if defined(RTCONFIG_BCMARM) || defined(RTCONFIG_LANTIQ) || defined(RTCONFIG_QCA) || defined(RTCONFIG_HND_ROUTER)
 extern int merlinr_firmware_check_update_main(int argc, char *argv[]);
 #endif
+#if defined(RTCONFIG_SOFTCENTER)
+enum {
+	SOFTCENTER_WAN=1,
+	SOFTCENTER_NAT,
+	SOFTCENTER_MOUNT
+};
+extern void softcenter_eval(int sig);
 #endif
 #if defined(RTAC68U) && !defined(SBRAC1900P)
-extern void ac68u_init_done(void);
 extern void tm1900_check(void);
 extern void merlinr_set(const char *name, const char *value);
-#endif
 extern int merlinr_toolbox(int argc, char **argv);
+#endif
+#endif
+
+
 
